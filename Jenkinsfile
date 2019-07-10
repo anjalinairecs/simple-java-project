@@ -1,15 +1,10 @@
-pipeline {
-    agent {
-        docker {
-            image 'node:6-alpine'
-            args '-p 3000:3000 -p 5000:5000' 
-        }
+node{
+    stage('Pull from git'){
+        git url: 'https://github.com/anjalinairecs/simple-java-project.git'
     }
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
+    stage('Build'){
+        def mvnHome = tool 'M3'
+        env.PATH = "${mvnHome}/bin:${env.PATH}"
+        sh 'mvn clean package'
     }
 }
